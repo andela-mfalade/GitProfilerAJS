@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html ng-app="gitApp">
+  <head>
+   <title>Git Profiler</title>
+   <link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.min.css">
+   <link rel="stylesheet" type="text/css" href="css/style.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+
+  <body class="row" ng-controller="gitCtrl">
+      <header class="page-header">
+        <!-- Header.. Logo and search form items  -->
+
+      <div class="row"> 
+      <div class="container">    
+          <div id="logo" class="col-sm-4">
+            <a href="index.html"><img src="images/Logo.png" class="img-responsive" alt="page logo"></a>
+          </div>
+          <div class="col-sm-4">
+          </div> 
+
+          <div class="col-sm-4" id="header_searchArea">
+            <form ng-submit="searchUser(query)">
+              <input type="search" id="header_search_box" placeholder="Enter username here.." class="form-control" ng-model="query">
+              <input type="button" id="header_search_button" value="Search" class="btn btn-primary">
+            </form>
+          </div>
+        </div>
+      </div>     
+      </header>
+
+      <div id="clear"></div>
+      <div id="intro_text" class="text-center">
+        <div id="search_area" ng-hide="resultsShown">          
+              <h2>Get the basic information of github users</h2>
+              <p>View projects directly in their repository.</p>
+              <div class="col-sm-3"></div>
+              <div class="col-sm-6">
+
+            <form ng-submit="searchUser(query)">              
+                <input type="search" id="search_box" placeholder="Search for user.." class="form-control" ng-model="query"><br>
+                <input type="button" id="search_button" value="Search" class="btn btn-primary">
+                <p ng-model="query"></p>
+            </form>
+          </div>
+          <div class="col-sm-3"></div>
+        </div>
+
+      </div>
+
+      <!-- Resuls section -->
+<div>
+<div id="results" class="row" ng-show="resultsShown">
+<div class="container">
+    <div class="col-md-7">
+        <div class="profile-container">
+            <div class="profile-header row">
+                <div class="col-md-4 col-sm-12 text-center">
+                    <img ng-src="{{retrievedInfo.avatar_url}}" alt="" class="header-avatar" id="user_avatar">
+                </div>
+                <div class="col-md-8 col-sm-12 profile-info">
+                    <div class="header-fullname" id="fullname" ng-bind="retrievedInfo.name"></div><br>
+                    <span class="header-information" id="username" ng-bind="retrievedInfo.login">
+                    </span>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 profile-stats">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-6 stats-col">
+                            <div class="stats-title">
+                              FOLLOWING
+                            </div>
+                            <div class="stats-value pink" id="numFllwd" ng-bind="retrievedInfo.following"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6 stats-col">
+                            <div class="stats-title">
+                              FOLLOWERS
+                            </div>
+                            <div class="stats-value pink" id="numFFlws" ng-bind="retrievedInfo.followers"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6 stats-col">
+                            <div class="stats-title">
+                              REPOSITORIES
+                            </div>
+                            <div class="stats-value pink" id="numRepos" ng-bind="retrievedInfo.public_repos"></div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6 stats-col">
+                            <div class="stats-title">
+                              COMPANIES
+                            </div>
+                            <div class="stats-value pink" id="numOrgs" ng-bind="organizations.length"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>   
+        </div>
+    </div>
+
+    <div class="col-md-5">
+
+<div class="tab-content" >
+    <div class="tab-pane fade in active" id="home">
+<!--     <div class="nav nav-tabs">
+      <h2 role="presentation">Repositories</h2>
+      <h2 role="presentation">Organizations</h2>    
+    </div> -->
+    <ul class="nav nav-tabs nav-justified" ng-init="tab = 1">
+      <li role="presentation">
+        <a href ng-click="tab = 1">
+          <span class="glyphicon glyphicon-folder-open"></span>Repositories
+        </a>
+      </li>
+      <li role="presentation">
+        <a href ng-click="tab = 2">
+        <span class="glyphicon glyphicon-home"></span>Companies
+        </a>
+      </li>
+    </ul>
+    <div ng-show="tab === 1">
+      <div class="panel" ng-repeat="repository in repositories">
+        <p><a href="{{repository.html_url}}" target="_blank" ng-bind="repository.full_name"></a></p> 
+      </div>
+    </div>
+  <div ng-show="tab === 2">
+    <div class="panel" ng-repeat="organization in organizations">
+      <p ng-bind="organization.login"></p> 
+    </div> 
+  </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+        <div class="preloaderHolder container">
+          <h1 id="errMessage" class="alert alert-danger" ng-show="errorThrown" ng-bind="errMsg.message"> </h1>
+          <img src="images/pre.GIF" id="preloader" class="img-responsive" alt="preloader image">
+        </div>
+
+  </div>
+      <script type="text/javascript" src="js/angular.js"></script>
+     <script type="text/javascript" src="js/controller.js"></script>
+     <script type="text/javascript" src="js/services.js"></script>
+  </body>
+    </html>
